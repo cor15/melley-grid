@@ -1,3 +1,4 @@
+
 # AI Spreadsheet (personal)
 
 A personal, AI-first spreadsheet tool: type an instruction, Claude turns it
@@ -72,3 +73,5 @@ to your deployed Render backend.
   tighten it as you find cases where Claude's formulas are syntactically
   valid but financially wrong (the TrufflePig review flagged working capital
   and net income as weak spots — worth testing those specifically).
+
+
