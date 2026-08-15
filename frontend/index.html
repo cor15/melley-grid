@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Spreadsheet</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/x-data-spreadsheet@1.1.9/dist/xspreadsheet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header id="topbar">
+      <input id="sheet-name" value="Untitled sheet" />
+      <div class="topbar-actions">
+        <button id="save-btn">Save</button>
+        <label class="import-btn">
+          Import
+          <input id="import-input" type="file" accept=".csv,.xlsx" hidden />
+        </label>
+        <button id="export-btn">Export</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="grid"></div>
+      <aside id="chat">
+        <div id="chat-log"></div>
+        <form id="chat-form">
+          <textarea id="chat-input" placeholder="e.g. Build a 3-statement model from this data..." rows="3"></textarea>
+          <button type="submit">Run</button>
+        </form>
+      </aside>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/x-data-spreadsheet@1.1.9/dist/xspreadsheet.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
