@@ -1,30 +1,122 @@
 * { box-sizing: border-box; }
-body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; height: 100vh; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+  height: 100vh;
+  color: #1b1b1b;
+}
 #app { display: flex; flex-direction: column; height: 100vh; }
 
-#topbar {
+/* --- Title bar: Excel's dark green --- */
+#titlebar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  border-bottom: 1px solid #ddd;
-  background: #fafafa;
+  padding: 6px 14px;
+  background: #185C37;
+  color: #fff;
 }
-#sheet-name { font-size: 16px; border: none; background: transparent; font-weight: 600; }
-#sheet-name:focus { outline: 1px solid #ccc; background: #fff; }
-.topbar-actions { display: flex; gap: 8px; }
-.topbar-actions button, .import-btn {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  background: #fff;
+.title-left { display: flex; align-items: center; gap: 10px; }
+#app-icon {
+  width: 30px; height: 30px;
+  background: #21A366;
   border-radius: 6px;
-  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px; color: #fff;
+  letter-spacing: 0.5px;
+}
+#sheet-name {
   font-size: 14px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-weight: 500;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+#sheet-name:focus { outline: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); }
+.title-actions { display: flex; gap: 6px; }
+.ribbon-action {
+  padding: 6px 12px;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.ribbon-action:hover { background: rgba(255,255,255,0.22); }
+.import-btn { display: inline-flex; align-items: center; }
+
+/* --- Tab strip --- */
+#ribbon-tabs {
+  display: flex;
+  background: #E7F0EA;
+  border-bottom: 1px solid #c7d9cd;
+  padding: 0 10px;
+}
+.ribbon-tab {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #2b2b2b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.ribbon-tab:hover { background: rgba(24,92,55,0.06); }
+.ribbon-tab.active {
+  border-bottom: 2px solid #185C37;
+  font-weight: 600;
+  color: #185C37;
 }
 
-main { flex: 1; display: flex; overflow: hidden; }
-#grid { flex: 1; overflow: auto; }
+/* --- Ribbon panel content --- */
+#ribbon-panels {
+  background: #F3F7F4;
+  border-bottom: 1px solid #c7d9cd;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+}
+.ribbon-panel { display: none; width: 100%; }
+.ribbon-panel.active { display: flex; }
+.ribbon-group { display: flex; align-items: center; gap: 10px; }
+.ribbon-group-label, .ribbon-group-caption {
+  font-size: 11px;
+  color: #5b6b60;
+}
+.ribbon-btn {
+  padding: 6px 10px;
+  border: 1px solid #c7d9cd;
+  background: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ribbon-btn:hover:not(:disabled) { background: #E7F0EA; }
+.ribbon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* --- Main layout --- */
+main { flex: 1; display: flex; overflow: hidden; }
+#grid-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #fff; }
+#grid { flex: 1; overflow: auto; min-height: 200px; }
+#charts-panel { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px; border-top: 1px solid #ddd; max-height: 260px; overflow-y: auto; }
+#charts-panel:empty { display: none; }
+.chart-card { width: 320px; background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 10px; }
+.chart-card h4 { margin: 0 0 6px; font-size: 13px; }
+
+/* --- Give x-spreadsheet's own toolbar an Excel-ish skin --- */
+.x-spreadsheet-toolbar {
+  background: #F3F7F4 !important;
+  border-bottom: 1px solid #c7d9cd !important;
+}
+.x-spreadsheet-toolbar-btn { border-radius: 3px !important; }
+.x-spreadsheet-toolbar-btn:hover { background: #E7F0EA !important; }
+.x-spreadsheet-sheet-tabs { background: #F3F7F4 !important; }
+
+/* --- Chat sidebar --- */
 #chat {
   width: 320px;
   border-left: 1px solid #ddd;
@@ -32,11 +124,63 @@ main { flex: 1; display: flex; overflow: hidden; }
   flex-direction: column;
   background: #fcfcfc;
 }
+#chat-header {
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #185C37;
+  border-bottom: 1px solid #eee;
+  background: #F3F7F4;
+}
 #chat-log { flex: 1; overflow-y: auto; padding: 12px; font-size: 13px; }
 #chat-log .msg { margin-bottom: 10px; padding: 8px 10px; border-radius: 8px; }
 #chat-log .msg.user { background: #eef2ff; }
 #chat-log .msg.assistant { background: #f0f0f0; }
+#chat-log .msg p { margin: 4px 0; }
+#chat-log .msg ul { margin: 4px 0; padding-left: 18px; }
+#chat-log .msg li { margin: 2px 0; }
+#chat-log .msg .msg-heading { margin: 6px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: #185C37; }
+#chat-log .msg strong { color: #185C37; }
+
+#assumptions-panel {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  background: #F3F7F4;
+  font-size: 12px;
+}
+#assumptions-panel.hidden { display: none; }
+.assumptions-title { font-weight: 600; color: #185C37; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px; font-size: 11px; }
+.assumption-row { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed #dce8e0; }
+.assumption-row:last-child { border-bottom: none; }
+.assumption-cell { font-weight: 600; color: #185C37; min-width: 30px; }
+.assumption-label { flex: 1; color: #444; }
+.assumption-value { color: #185C37; font-weight: 600; }
 
 #chat-form { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-top: 1px solid #ddd; }
 #chat-input { resize: none; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
-#chat-form button { padding: 8px; border: none; background: #2563eb; color: #fff; border-radius: 6px; cursor: pointer; }
+#chat-form button { padding: 8px; border: none; background: #185C37; color: #fff; border-radius: 6px; cursor: pointer; }
+#chat-form button:hover { background: #144a2c; }
+
+/* --- Automation modal --- */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal.hidden { display: none; }
+.modal-content { background: #fff; border-radius: 10px; padding: 18px; width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { margin: 0; color: #185C37; }
+.modal-header button { border: none; background: none; font-size: 22px; cursor: pointer; line-height: 1; }
+.modal-hint { font-size: 12px; color: #666; margin: 6px 0 14px; }
+#rules-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.rule-item { border: 1px solid #eee; border-radius: 6px; padding: 8px; font-size: 13px; display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+.rule-item .rule-text { flex: 1; }
+.rule-item .rule-range { font-weight: 600; color: #185C37; }
+.rule-item button { border: none; background: #fee2e2; color: #b91c1c; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+#rule-form { display: flex; flex-direction: column; gap: 6px; }
+#rule-form input, #rule-form textarea { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; resize: vertical; }
+#rule-form button { padding: 8px; border: none; background: #185C37; color: #fff; border-radius: 6px; cursor: pointer; }
+
+/* --- Mobile --- */
+@media (max-width: 700px) {
+  main { flex-direction: column; }
+  #chat { width: 100%; max-height: 40vh; border-left: none; border-top: 1px solid #ddd; }
+  .title-actions { flex-wrap: wrap; }
+}
