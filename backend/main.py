@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import sheets, prompt, files
+from routes import sheets, prompt, files, rules
 
 app = FastAPI(title="AI Spreadsheet API")
 
@@ -16,6 +16,7 @@ app.add_middleware(
 app.include_router(sheets.router)
 app.include_router(prompt.router)
 app.include_router(files.router)
+app.include_router(rules.router)
 
 
 @app.get("/")
