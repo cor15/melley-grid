@@ -9,21 +9,67 @@
 </head>
 <body>
   <div id="app">
-    <header id="topbar">
-      <input id="sheet-name" value="Untitled sheet" />
-      <div class="topbar-actions">
-        <button id="save-btn">Save</button>
-        <label class="import-btn">
+    <!-- Title bar: app identity + file name + primary actions, like Excel's top strip -->
+    <header id="titlebar">
+      <div class="title-left">
+        <div id="app-icon">FX</div>
+        <input id="sheet-name" value="Untitled sheet" />
+      </div>
+      <div class="title-actions">
+        <button id="automation-btn" class="ribbon-action">⚡ Automation</button>
+        <button id="save-btn" class="ribbon-action">Save</button>
+        <label class="ribbon-action import-btn">
           Import
           <input id="import-input" type="file" accept=".csv,.xlsx" hidden />
         </label>
-        <button id="export-btn">Export</button>
+        <button id="export-btn" class="ribbon-action">Export</button>
       </div>
     </header>
 
+    <!-- Ribbon tab strip -->
+    <nav id="ribbon-tabs">
+      <button class="ribbon-tab active" data-tab="home">Home</button>
+      <button class="ribbon-tab" data-tab="insert">Insert</button>
+      <button class="ribbon-tab" data-tab="data">Data</button>
+      <button class="ribbon-tab" data-tab="view">View</button>
+    </nav>
+
+    <!-- Ribbon content: Home hosts the real toolbar (rendered by the grid library into #grid);
+         other tabs are placeholders for now, shown so the app reads as a real spreadsheet shell. -->
+    <div id="ribbon-panels">
+      <div class="ribbon-panel active" data-panel="home">
+        <div class="ribbon-group">
+          <span class="ribbon-group-label">Formatting &amp; formulas live in the toolbar below</span>
+        </div>
+      </div>
+      <div class="ribbon-panel" data-panel="insert">
+        <div class="ribbon-group">
+          <button class="ribbon-btn" disabled>📊 Chart</button>
+          <button class="ribbon-btn" disabled>🖼 Image</button>
+          <span class="ribbon-group-caption">Ask the AI chat to insert a chart instead — e.g. "chart column A as a bar chart"</span>
+        </div>
+      </div>
+      <div class="ribbon-panel" data-panel="data">
+        <div class="ribbon-group">
+          <button class="ribbon-btn" id="ribbon-import-btn">⭳ Import CSV/XLSX</button>
+          <button class="ribbon-btn" id="ribbon-export-btn">⭱ Export XLSX</button>
+        </div>
+      </div>
+      <div class="ribbon-panel" data-panel="view">
+        <div class="ribbon-group">
+          <span class="ribbon-group-caption">View options coming later — gridlines and freeze panes are available in the Home toolbar.</span>
+        </div>
+      </div>
+    </div>
+
     <main>
-      <div id="grid"></div>
+      <div id="grid-area">
+        <div id="grid"></div>
+        <div id="charts-panel"></div>
+      </div>
       <aside id="chat">
+        <div id="chat-header">AI Assistant</div>
+        <div id="assumptions-panel" class="hidden"></div>
         <div id="chat-log"></div>
         <form id="chat-form">
           <textarea id="chat-input" placeholder="e.g. Build a 3-statement model from this data..." rows="3"></textarea>
@@ -31,9 +77,26 @@
         </form>
       </aside>
     </main>
+
+    <div id="automation-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Automation rules</h3>
+          <button id="automation-close">&times;</button>
+        </div>
+        <p class="modal-hint">When cells in a range change, the linked instruction runs automatically.</p>
+        <div id="rules-list"></div>
+        <form id="rule-form">
+          <input id="rule-range" placeholder="Trigger range, e.g. B1:B10" required />
+          <textarea id="rule-instruction" placeholder="Instruction to run, e.g. recalculate totals in column C" rows="2" required></textarea>
+          <button type="submit">Add rule</button>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/x-data-spreadsheet@1.1.9/dist/xspreadsheet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
